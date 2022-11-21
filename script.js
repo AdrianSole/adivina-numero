@@ -1,52 +1,57 @@
 let secretNumber = Math.trunc(Math.random() * 20) + 1;
-
 let score = 20;
 let highScore = 0;
 
-const scoreField = document.querySelector('.score');
-const highScoreField = document.querySelector('.highscore');
-const guessField = document.querySelector('.guess');
-const numberField = document.querySelector('.number');
-const messageField = document.querySelector('.message');
-console.log(`El campo score tiene el valor ${scoreField}`);
+const scoreField = document.querySelector(".score");
+const highScoreField = document.querySelector(".highscore");
+const guessField = document.querySelector(".guess");
+const numberField = document.querySelector(".number");
+const messageField = document.querySelector(".message");
+const body = document.querySelector("body");
 
 function displayMessage(msg) {
   messageField.textContent = msg;
 }
 
-console.log(secretNumber);
-
-document.querySelector('.check').addEventListener('click', () => {
+document.querySelector(".check").addEventListener("click", () => {
   const guess = Number(guessField.value);
+
+  //Cuando no se introduce nada
   if (!guess) {
-    displayMessage('Introduce un número');
+    displayMessage("Introduce un número");
+
+    // Cuando se gana
   } else if (guess === secretNumber) {
-    displayMessage('Has acertado!');
+    displayMessage("Has acertado!");
+    numberField.textContent = secretNumber;
+
+    body.style.backgroundColor = "#60b347";
+    numberField.style.width = "30rem";
+
     if (score > highScore) {
       highScore = score;
       highScoreField.textContent = score;
     }
-    // TODO: visualizar el número, cambiar estilos
-    // propiedad style y notación estilos con camelCase
-    // ej. background-color -> backgroundColor
-    numberField.textContent = guess;
+    // Cuando falla
   } else if (score > 1) {
-    displayMessage(guess > secretNumber ? 'Too high!' : 'Too low!');
+    displayMessage(guess > secretNumber ? "Too high!" : "Too low!");
     score -= 1;
     scoreField.textContent = 0;
   } else {
-    displayMessage('You lost the game!');
+    displayMessage("You lost the game!");
     scoreField.textContent = 0;
   }
 });
 
-// TODO:
-// - Funcionalidad botón "Again!" -> Event listener...
-document.querySelector('.again').addEventListener('click', () => {
-  highScoreField.textContent = 0;
-  guessField.value = '';
-  numberField.textContent = '?';
-  scoreField.textContent = 20;
+document.querySelector(".again").addEventListener("click", function () {
+  score = 20;
   secretNumber = Math.trunc(Math.random() * 20) + 1;
-  console.log(secretNumber);
+
+  displayMessage("Start guessing...");
+  scoreField.textContent = score;
+  numberField.textContent = "?";
+  guessField.value = "";
+
+  body.style.backgroundColor = "#222";
+  numberField.style.width = "15rem";
 });
